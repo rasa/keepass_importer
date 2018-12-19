@@ -14,3 +14,7 @@ commit:
 .PHONY: upload
 upload:
 	./upload.sh "$(PACKAGE)"
+
+.PHONY: clean
+clean:
+	./clean.sh "$(PACKAGE)"

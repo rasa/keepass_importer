@@ -36,6 +36,7 @@ do_zip() {
 		git commit -q -m "Release ${ver}: ${zip}
 
 Source: ${url}"
+		
 	_popd
 }
 
@@ -44,12 +45,23 @@ do_ver() {
 		mapfile -t zips < <( find . -type f -iname "${mask}" -printf "%T@\t%P\n" | sort -n | cut -f 2- )
 	_popd
 	for zip in "${zips[@]}"; do
+		committed=".${dir}_${app}_${ver}_${zip}.committed"
+		if [[ -e "${committed}" ]]; then
+			continue
+		fi
 		printf "Processing %s\n" "$(stat --printf '%y %n' "${dir}/${app}/${ver}/${zip}")"
 		do_zip
+		touch "${committed}"
 	done
+
+	tagged=".${dir}_${app}_${ver}.tagged"
+	if [[ -e "${tagged}" ]]; then
+		return
+	fi	
 	_pushd "${appname}"
 		git tag "v${ver}" -m "v${ver}"
 	_popd
+	touch "${tagged}"
 }
 
 do_app() {
@@ -58,11 +70,13 @@ do_app() {
 	rm="$3"
 
 	appname="$(tr -d ' .x' <<<"${app}" | tr [A-Z] [a-z])"
-	printf "Creating directory %s\n" "${appname}"
-	mkdir -p "${appname}"
-	_pushd "${appname}"
-		git init -q
-	_popd
+	if [[ ! -d "${appname}" ]]; then
+		printf "Creating directory %s\n" "${appname}"
+		mkdir -p "${appname}"
+		_pushd "${appname}"
+			git init -q
+		_popd
+	fi
 	_pushd "${dir}/${app}"
 		mapfile -t vers < <( find . -mindepth 1 -maxdepth 1 -type d -printf '%P\n' )
 	_popd
@@ -77,11 +91,6 @@ main() {
 
 	printf "Processing dirs in '%s'\n" "${dir}"
 
-	rm -fr keepass1
-	rm -fr keepass2
-	rm -fr translations1
-	rm -fr translations2
-	rm -fr plugins
 	do_app "Keepass 1.x"      "*Src.zip"    "y"
 	do_app "Keepass 2.x"      "*Source.zip" "y"
 	do_app "Translations 1.x" "*.zip"       "n"

@@ -1,7 +1,9 @@
-/sourceforge.net
-/urllist
 /keepass
 /keepass1
 /keepass2
+/sourceforge.net
 /translations1
 /translations2
+/urllist
+/.*.committed
+/.*.tagged
