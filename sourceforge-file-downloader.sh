@@ -24,9 +24,9 @@ grep -Rh refresh sourceforge.net/ | grep -o "https:[^\\?]*" | sort -u > urllist
 printf "Downloading %d URLs\n" "$(wc -l < urllist)"
 
 # remove temporary files, unless you want to keep them for some reason
-rm -r sourceforge.net/
+# rm -r sourceforge.net/
 
 # download each of the extracted URLs, put into $projectname/
 while read url; do wget -U Wget/1.19.1 --content-disposition -x -nH --cut-dirs=1 "${url}"; done < urllist
 
-rm urllist
+# rm urllist
