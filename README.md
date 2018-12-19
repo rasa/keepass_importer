@@ -12,10 +12,10 @@ The [Plugins](https://sourceforge.net/projects/keepass/files/Plugins/) folder is
 ## Getting Started
 
 Create four repositories on github:
-1. keepass1
-2. keepass2
-3. keypass1_translations
-4. keypass2_translations
+1. [keepass1](https://github.com/rasa/keepass1)
+2. [keepass2](https://github.com/rasa/keepass2)
+3. [keypass1_translations](https://github.com/rasa/keepass1_translations)
+4. [keypass2_translations](https://github.com/rasa/keepass2_translations)
 
 Run:
 
@@ -26,7 +26,7 @@ make
 ## Authors
 
 * Dominik Reichl - Author of KeePass - (https://www.dominik-reichl.de/)
-* Ross Smith II - Author of keepass_importre - [@rasa](https://github.com/rasa)
+* Ross Smith II - Author of keepass_importer - [@rasa](https://github.com/rasa)
 
 See also the list of [contributors](https://github.com/rasa/keepass_importer/contributors) who participated in this project.
 
