@@ -1,6 +1,6 @@
 # rasa/keepass_importer
 
-Import the following folders in the [KeePass](https://sourceforge.net/projects/keepass) project into git:
+keepass_importer imports the following folders in the [KeePass](https://sourceforge.net/projects/keepass) project into GIithub projects:
 
 * [KeePass 1.x](https://sourceforge.net/projects/keepass/files/KeePass%201.x/)
 * [KeePass 2.x](https://sourceforge.net/projects/keepass/files/KeePass%202.x/)
