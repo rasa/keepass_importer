@@ -7,7 +7,7 @@ Import the following folders in the [KeePass](https://sourceforge.net/projects/k
 * [Translations 1.x](https://sourceforge.net/projects/keepass/files/Translations%201.x/)
 * [Translations 2.x](https://sourceforge.net/projects/keepass/files/Translations%202.x/)
 
-The [Plugins](https://sourceforge.net/projects/keepass/files/Plugins/) folder is not imported, as the code is no longer maintained.
+The [Plugins](https://sourceforge.net/projects/keepass/files/Plugins/) folder is not imported, as the code has not been update since 2009.
 
 ## Getting Started
 
@@ -36,4 +36,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Many thanks to [Dominik Reichl](https://www.dominik-reichl.de/) for his years of service to KeePass 1 and 2.
+* Many thanks to [Dominik Reichl](https://www.dominik-reichl.de/) for creating KeePass 1 and 2.
