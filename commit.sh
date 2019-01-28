@@ -3,8 +3,8 @@
 set -e
 
 URLLIST="$(realpath urllist)"
-SEVENZIP="$(command -v 7z.exe)"
-EOLFIX="$(command -v eolfix.exe)"
+SEVENZIP="$(command -v 7z)"
+EOLFIX="$(command -v eolfix)"
 
 _pushd() {
     pushd "$1" >/dev/null || exit 1
