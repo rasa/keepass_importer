@@ -5,8 +5,7 @@ display_usage() {
   echo "\nUsage: ./sourceforge-file-download.sh [project name] \n"
 }
 
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
   display_usage
   exit 1
 fi
@@ -19,14 +18,14 @@ echo "Downloading $project's files"
 wget --wait 1 --no-parent --mirror --accept download http://sourceforge.net/projects/$project/files/
 
 # extract those links
-grep -Rh refresh sourceforge.net/ | grep -o "https:[^\\?]*" | sort -u > urllist
+grep -Rh refresh sourceforge.net/ | grep -o "https:[^\\?]*" | sort -u >urllist
 
-printf "Downloading %d URLs\n" "$(wc -l < urllist)"
+printf "Downloading %d URLs\n" "$(wc -l <urllist)"
 
 # remove temporary files, unless you want to keep them for some reason
 # rm -r sourceforge.net/
 
 # download each of the extracted URLs, put into $projectname/
-while read url; do wget -U Wget/1.19.1 --no-clobber --content-disposition --force-directories --no-host-directories --cut-dirs=1 "${url}"; done < urllist
+while read url; do wget -U Wget/1.19.1 --no-clobber --content-disposition --force-directories --no-host-directories --cut-dirs=1 "${url}"; done <urllist
 
 # rm urllist
