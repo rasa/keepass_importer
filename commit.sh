@@ -6,6 +6,9 @@ URLLIST="$(realpath urllist)"
 SEVENZIP="$(command -v 7z)"
 EOLFIX="$(command -v eolfix)"
 
+GIT_OPTIONS='-c core.safecrlf=false'
+GIT="git ${GIT_OPTIONS}"
+
 _pushd() {
     pushd "$1" >/dev/null || exit 1
 }
@@ -17,7 +20,7 @@ _popd() {
 do_zip() {
     _pushd "${appname}"
         if [[ "${rm}" == "y" ]]; then
-            git ls-files -z | xargs --no-run-if-empty -0 rm -f
+            ${GIT} ls-files -z | xargs --no-run-if-empty -0 rm -f
         fi
         printf "Unzipping %s into ./%s\n" "${dir}/${app}/${ver}/${zip}" "${appname}"
         "${SEVENZIP}" x -aoa -r -y "../${dir}/${app}/${ver}/${zip}" >/dev/null
@@ -35,11 +38,11 @@ do_zip() {
         zone="$(cut -d ' ' -f 3 <<<"${stat}")"
         stat="${date}T${time} ${zone}"
         printf "%s %s\n" "${stat} ${file}"
-        git add .
+        ${GIT} add .
         export GIT_AUTHOR_DATE="${stat}"
         export GIT_COMMITTER_DATE="${GIT_AUTHOR_DATE}"
         printf "Executing: git commit -m \"Release ${ver}: ${zip} / Source: ${url}\"\n"
-        git commit -q -m "Release ${ver}: ${zip}
+        ${GIT} commit -q -m "Release ${ver}: ${zip}
 
 Source: ${url}"
     _popd
@@ -65,7 +68,7 @@ do_ver() {
     fi
     _pushd "${appname}"
         printf "Executing: git tag v${ver} -m v${ver}\n"
-        git tag "v${ver}" -m "v${ver}"
+        ${GIT} tag "v${ver}" -m "v${ver}"
     _popd
     touch "${tagged}"
 }
@@ -80,7 +83,7 @@ do_app() {
         printf "Creating directory %s\n" "${appname}"
         mkdir -p "${appname}"
         _pushd "${appname}"
-            git init -q
+            ${GIT} init -q
         _popd
     fi
     _pushd "${dir}/${app}"
