@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 upload() {
   url=https://github.com/rasa/$2.git
-  printf "Uploading %s to %s\n" "$1" "${url}"
+  printf 'Uploading %s to %s\n' "$1" "${url}"
   pushd "$1" >/dev/null || exit
   if ! git remote | grep -q -E ^origin; then
     git remote add origin "${url}"
   fi
   git push -u origin master
   git push --tags
-  popd >/dev/null
+  popd >/dev/null || exit
 }
 
 upload keepass1 keepass1
