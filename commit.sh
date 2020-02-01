@@ -3,8 +3,13 @@
 set -e
 
 URLLIST="$(realpath urllist)"
-SEVENZIP="$(command -v 7z)"
-EOLFIX="$(command -v eolfix)"
+SEVENZIP="$(command -v 7z || true)"
+EOLFIX="$(command -v eolfix || true)"
+
+if [ -z "${SEVENZIP:-}" ]; then
+  printf '%s: 7z is required\n' "$0" >&2
+  exit 1
+fi
 
 GIT_OPTIONS='-c core.safecrlf=false'
 GIT="git ${GIT_OPTIONS}"
@@ -26,7 +31,7 @@ do_zip() {
   "${SEVENZIP}" x -aoa -r -y "../${dir}/${app}/${ver}/${zip}" >/dev/null
   printf '$?=%d\n' "$?"
   url="$(grep "${zip}" "${URLLIST}")"
-  if [[ -n "${EOLFIX}" ]]; then
+  if [[ "${EOLFIX}" ]]; then
     # list files that do not have unix (lf) line endings
     "${EOLFIX}" -i u || true
   fi
