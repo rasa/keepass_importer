@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # source: https://github.com/rasa/sourceforge-file-download/blob/master/sourceforge-file-downloader.sh
 
 display_usage() {
@@ -16,7 +17,7 @@ printf "Downloading %s's files\\n" "$project"
 
 # download all the pages on which direct download links are
 # be nice, sleep a second
-WGET_OPTS=(--no-check-certificate -U Wget/1.19.1)
+WGET_OPTS=(--no-verbose --no-check-certificate -U Wget/1.20.3)
 wget --wait 1 --no-parent --mirror --accept download "${WGET_OPTS[@]}" "http://sourceforge.net/projects/$project/files/"
 
 # extract those links
@@ -28,6 +29,8 @@ printf 'Downloading %d URLs\n' "$(wc -l <urllist)"
 # rm -r sourceforge.net/
 
 # download each of the extracted URLs, put into $projectname/
-while read -r url; do wget --no-clobber --content-disposition --force-directories --no-host-directories --cut-dirs=1 "${WGET_OPTS[@]}" "${url}"; done <urllist
+while read -r url; do
+  wget --no-clobber --content-disposition --force-directories --no-host-directories --cut-dirs=1 "${WGET_OPTS[@]}" "${url}"
+done <urllist
 
 # rm urllist

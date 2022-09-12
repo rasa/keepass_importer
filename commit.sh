@@ -15,7 +15,7 @@ GIT_OPTIONS='-c core.safecrlf=false'
 GIT="git ${GIT_OPTIONS}"
 
 _pushd() {
-  pushd "$1" >/dev/null || exit 1
+  pushd "$1" || exit 1
 }
 
 _popd() {
@@ -27,10 +27,12 @@ do_zip() {
   if [[ "${rm}" == "y" ]]; then
     ${GIT} ls-files -z | xargs --no-run-if-empty -0 rm -f
   fi
-  printf 'Unzipping %s into ./%s\n' "${dir}/${app}/${ver}/${zip}" "${appname}"
+  # printf 'Unzipping %s into %s/%s\n' "../${dir}/${app}/${ver}/${zip}" "$(pwd)"
+  printf "Executing: '${SEVENZIP}' x -aoa -r -y '../${dir}/${app}/${ver}/${zip}'"
   "${SEVENZIP}" x -aoa -r -y "../${dir}/${app}/${ver}/${zip}" >/dev/null
-  printf '$?=%d\n' "$?"
-  url="$(grep "${zip}" "${URLLIST}")"
+  if [[ "$?" -gt 0 ]]; then
+    printf '"${SEVENZIP}" returned error %d\n' "$?"
+  fi
   if [[ "${EOLFIX}" ]]; then
     # list files that do not have unix (lf) line endings
     "${EOLFIX}" -i u || true
@@ -44,9 +46,16 @@ do_zip() {
   stat="${date}T${time} ${zone}"
   printf '%s %s\n' "${stat}" "${file}"
   ${GIT} add .
+  ${GIT} update-index --refresh
+  ${GIT} diff-index HEAD --
+  if ${GIT} diff-index --quiet HEAD --; then
+    _popd
+    return
+  fi
+  url="$(grep "${zip}" "${URLLIST}")"
+  printf 'Executing: %s\n' "git commit -m \"Release ${ver}: ${zip}\" / Source: ${url}"
   export GIT_AUTHOR_DATE="${stat}"
   export GIT_COMMITTER_DATE="${GIT_AUTHOR_DATE}"
-  printf 'Executing: %s\n' "git commit -m \"Release ${ver}: ${zip}\" / Source: ${url}"
   ${GIT} commit -q -m "Release ${ver}: ${zip}
 
 Source: ${url}"

@@ -7,8 +7,8 @@ upload() {
   if ! git remote | grep -q -E ^origin; then
     git remote add origin "${url}"
   fi
-  git push -u origin master
-  git push --tags
+  git push --force --set-upstream origin master
+  git push --force --tags
   popd >/dev/null || exit
 }
 
