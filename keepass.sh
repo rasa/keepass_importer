@@ -6,3 +6,5 @@ export GIT_AUTHOR_EMAIL="dominik.reichl@t-online.de"
 export GIT_COMMITTER_EMAIL="dominik.reichl@t-online.de"
 
 export TZ=Europe/Berlin
+
+# cSpell:ignore Dominik, Reichl

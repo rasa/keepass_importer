@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+IFS=$'\n\t'
 
 VERSIONS=()
 # these do not exist:
@@ -67,14 +71,21 @@ VERSIONS+=(2.49)
 VERSIONS+=(2.50)
 VERSIONS+=(2.51)
 VERSIONS+=(2.51.1)
+VERSIONS+=(2.52)
+VERSIONS+=(2.53)
+VERSIONS+=(2.54)
+VERSIONS+=(2.55)
+VERSIONS+=(2.56)
 
 test -d kpscript || mkdir kpscript
-pushd kpscript
+pushd kpscript || exit 1
 rm -f urllist
-for v in ${VERSIONS[@]}; do
-	zip=KPScript-${v}.zip
-	url=https://keepass.info/extensions/v2/kpscript/${zip}
-	test -f "${zip}" || wget ${url}
+for v in "${VERSIONS[@]}"; do
+	zip="KPScript-${v}.zip"
+	url="https://keepass.info/extensions/v2/kpscript/${zip}"
+	test -f "${zip}" || wget "${url}"
 	test -f "${zip}" && printf '%s\n' "${url}" >>urllist
 done
-popd
+popd || exit 1
+
+# cSpell:ignore kpscript

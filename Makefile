@@ -1,17 +1,21 @@
-# Makefile
+#!/usr/bin/env make
 
 PACKAGE?=keepass
 
 .PHONY: help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "%-30s %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "%-10s %s\n", $$1, $$2}'
 
 .PHONY: all
-all: download commit upload ## make download commit upload
+all: init download commit upload ## make init download commit upload
+
+.PHONY: init
+init:	## Initialize git directories in keepass
+	./init.sh "$(PACKAGE)"
 
 .PHONY: download
 download:	## Download the latest keepass files from SourceForge
-	./sourceforge-file-downloader.sh "$(PACKAGE)"
+	./download.sh "$(PACKAGE)"
 
 .PHONY: commit
 commit:	## Commit changes
