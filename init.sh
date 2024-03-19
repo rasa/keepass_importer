@@ -7,6 +7,10 @@ IFS=$'\n\t'
 test ! -d keepass &&
   mkdir keepass
 
+epoch=315532800
+export GIT_AUTHOR_DATE=$(TZ=UTC date +%c --date="@${epoch}")
+export GIT_COMMITTER_DATE="${GIT_AUTHOR_DATE}"
+
 for dir in keepass1 keepass2 translations1 translations2; do
   if [[ ! -d "${dir}" ]]; then
     mkdir "${dir}"
